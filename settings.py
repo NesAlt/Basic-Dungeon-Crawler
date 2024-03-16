@@ -1,0 +1,41 @@
+WIDTH=1024
+HEIGHT=768
+FPS=60
+TILESIZE=32
+
+BAR_HEIGHT=20
+HEALTH_BAR_WIDTH=200
+MANA_BAR_WIDTH=100
+ARMOR_RATING=20
+ITEM_BOX_SIZE=80
+UI_FONT='Assets/fonts/ui fonts/joystix monospace.ttf'
+UI_FONT_SIZE=18
+
+WATER_COLOR='#71ddee'
+UI_BG_COLOR='#222222'
+UI_BORDER_COLOR='#111111'
+TEXT_COLOR='#EEEEEE'
+
+HEALTH_COLOR='red'
+MANA_COLOR='blue'
+ARMOR_COLOR='silver'
+UI_BORDER_ACTIVE_COLOR='gold'
+
+weapon_data={
+  'sword':{'cooldown':100,'damage':15,'crit ratio':5,'graphic':'Assets/weapons/sword/sword.png'},
+  'spear':{'cooldown':600,'damage':25,'crit ratio':10,'graphic':'Assets/weapons/spear/spear.png'},
+  'dagger':{'cooldown':50,'damage':8,'crit ratio':15,'graphic':'Assets/weapons/dagger/dagger.png'},
+  'staff':{'cooldown':100,'damage':5,'crit ratio':5,'graphic':'Assets/weapons/staff/staff.png'},
+  'shotgun':{'cooldown':80,'damage':12,'crit ratio':0,'graphic':'Assets/weapons/shotgun/shotgun.png'}}
+
+magic_data={
+  'staff_magic':{'cooldown':150},
+  'tome_magic':{'cooldown':250}
+}
+
+monster_data = {
+	'elite guard': {'health': 500,'damage':30,'exp':0,'attack_type': 'slam','cooldown':600, 'attack_sound':'../audio/attack/slash.wav', 'speed': 1, 'resistance': 3, 'attack_radius': 30, 'notice_radius': 250},
+	'knight': {'health': 100,'damage':10,'exp':20,'attack_type': 'slash','cooldown':100,  'attack_sound':'../audio/attack/slash.wav','speed': 2, 'resistance': 3, 'attack_radius': 80, 'notice_radius': 400},
+	'angel': {'health': 250,'damage':20,'exp':20,'attack_type': 'projectile', 'attack_sound':'../audio/attack/slash.wav', 'speed': 2, 'resistance': 3, 'attack_radius': 40, 'notice_radius': 350},
+	'mage': {'health': 75,'damage':15,'exp':20,'attack_type': 'projectile', 'attack_sound':'../audio/attack/slash.wav', 'speed': 2, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 300},
+  'boss':{'health': 1000,'damage':45,'exp':20,'attack_type': 'all', 'attack_sound':'../audio/attack/slash.wav', 'speed': 4, 'resistance': 0, 'attack_radius': 45, 'notice_radius': 550}}
