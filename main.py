@@ -1,29 +1,6 @@
 import pygame
 from settings import *
-
-class Button:
-  def __init__(self, x, y, width, height, color, text_color, font, text, action):
-    self.x = x
-    self.y = y
-    self.width = width
-    self.height = height
-    self.color = color
-    self.text_color = text_color
-    self.font = font
-    self.text = text
-    self.action = action
-    self.text_surface = self.font.render(self.text, True, self.text_color)
-    self.text_rect = self.text_surface.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
-
-  def draw(self):
-    pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
-    screen.blit(self.text_surface, self.text_rect)
-
-  def handle_event(self, event):
-    if event.type == pygame.MOUSEBUTTONDOWN:
-      mouse_x, mouse_y = event.pos
-      if self.x <= mouse_x <= self.x + self.width and self.y <= mouse_y <= self.y + self.height:
-        self.action()
+from ui import Button
 
         
 def start_game():
@@ -92,7 +69,7 @@ while running:
   if background_image:
     screen.blit(background_image, (0, 0))
 
-  start_button.draw()
-  quit_button.draw()
+  start_button.draw(screen)
+  quit_button.draw(screen)
   pygame.display.flip()
 pygame.quit()
