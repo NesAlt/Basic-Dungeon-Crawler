@@ -17,7 +17,6 @@ class Player(Entity):
 
     self.game_over=False
 
-
     self.attacking=False
     self.attack_cooldown=400
     self.attack_speed=0
@@ -132,8 +131,6 @@ class Player(Entity):
           self.weapon_index=0
         self.weapon=list(weapon_data.keys())[self.weapon_index]
 
-
-  
   def cooldowns(self):
     current_time=pygame.time.get_ticks()
 
@@ -168,7 +165,6 @@ class Player(Entity):
     else:
       self.image.set_alpha(255)
 
-
   def get_full_weapon_damage(self):
     base_damage=self.stats['attack']
     weapon_damage=weapon_data[self.weapon]['damage']
@@ -182,26 +178,9 @@ class Player(Entity):
       # print(f'damage={val}')
       return val
 
-  # def display_death_message():
-  # # Create a text surface with the death message
-  #   death_text = font.render("You Died!", True, (255, 0, 0))  # Replace with your font and color
-  #   text_rect = death_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-
-  #   # Draw the text surface on the screen
-  #   pygame.screen.blit(death_text, text_rect)
-  #   pygame.display.flip()  # Update the display
-  #   pygame.time.delay(3000)  
-
-  # def handle_player_death():
-  #   display_death_message()
-
   def update(self):
     self.entity_input()
     self.cooldowns()
     self.get_status()
     self.animate()
     self.move(self.speed)
-
-    # if self.health <= 0:
-    #   self.kill()  # Remove player from sprite groups
-    #   handle_player_death() 

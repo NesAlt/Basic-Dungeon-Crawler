@@ -133,7 +133,6 @@ class Enemy(Entity):
     self.cooldown()
     self.check_death()
 
-
   def enemy_update(self,player):
     self.get_status(player)
     self.actions(player)

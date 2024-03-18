@@ -1,4 +1,4 @@
-import pygame
+import pygame,sys
 from settings import *
 from tile import Tile
 from player import Player
@@ -6,9 +6,8 @@ from LevelLoader import *
 from debug import debug
 import random
 from weapons import weapon
-from ui import UI
+from ui import UI,Button
 from enemy import Enemy
-
 class level:
   def __init__(self):
     
@@ -20,9 +19,7 @@ class level:
     self.current_attack=None
     self.attack_sprites=pygame.sprite.Group()
     self.attackable_sprites=pygame.sprite.Group()
-
     self.create_map()
-
     self.ui=UI()
   
   def create_map(self):
@@ -61,7 +58,6 @@ class level:
   def create_attack(self):
     self.current_attack=weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
-  
   def destroy_attack(self):
     if self.current_attack:
       self.current_attack.kill()
@@ -82,9 +78,11 @@ class level:
       self.player.vulnerable=False
       self.player.hurt_time=pygame.time.get_ticks()
 
-    # if self.player.health<0:
-      
-  
+    if self.player.health<0:
+      self.player.health = 0
+      return True
+    else:
+      return False
 
   def run(self):
     self.visible_sprites.custom_draw(self.player)
@@ -110,7 +108,6 @@ class YSortCameraGroup(pygame.sprite.Group):
     for enemy in enemy_sprites:
       enemy.enemy_update(player)
 
-
   def custom_draw(self,player):
 
     self.offset.x=player.rect.centerx-self.half_width
@@ -122,4 +119,3 @@ class YSortCameraGroup(pygame.sprite.Group):
     for sprite in sorted(self.sprites(),key=lambda sprite:sprite.rect.centery):
       offset_pos=sprite.rect.topleft-self.offset
       self.display_surface.blit(sprite.image,offset_pos)
-  
