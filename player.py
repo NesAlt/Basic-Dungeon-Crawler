@@ -94,28 +94,32 @@ class Player(Entity):
     if not self.attacking and not self.guard:
       keys = pygame.key.get_pressed()
     
-      if keys[pygame.K_w]:
+      if keys[pygame.K_w] or keys[pygame.K_UP]:
         self.direction.y=-1
         self.status='up'
-      elif keys[pygame.K_s]:
+      elif keys[pygame.K_s]or keys[pygame.K_DOWN]:
         self.direction.y=1
         self.status='down'
       else:
         self.direction.y=0
 
-      if keys[pygame.K_d]:
+      if keys[pygame.K_d]or keys[pygame.K_RIGHT]:
         self.direction.x=1
         self.status='right'
-      elif keys[pygame.K_a]:
+      elif keys[pygame.K_a]or keys[pygame.K_LEFT]:
         self.direction.x=-1
         self.status='left'
       else:
         self.direction.x=0
 
       if keys[pygame.K_SPACE]:
-        self.attacking=True
-        self.attack_time=pygame.time.get_ticks()
-        self.create_attack()
+        if not self.attack_pressed_last_frame:
+                self.attacking = True
+                self.attack_time = pygame.time.get_ticks()
+                self.create_attack()
+        self.attack_pressed_last_frame = True
+      else:
+        self.attack_pressed_last_frame = False
 
       if keys[pygame.K_v]:
         self.guard=True

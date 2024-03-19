@@ -50,7 +50,6 @@ class Game:
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -68,7 +67,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 elif event.type == GAME_OVER:
-                    if event.win:
+                    if hasattr(event,'win') and event.win:
                         self.victory_menu()
                     else:
                         self.game_over_menu()
@@ -77,6 +76,7 @@ class Game:
             self.screen.fill('black')
             self.camera_group.custom_draw(self.level.player)
             self.level.run()
+
             if self.level.check_victory():
                 self.victory_menu()
                 return
@@ -97,6 +97,8 @@ class Game:
         game_over_font = pygame.font.Font(UI_FONT, 40)
         game_over_text = game_over_font.render("Game Over!", True, TEXT_COLOR)
         game_over_text_rect = game_over_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
+        background_image = pygame.image.load("Assets/background.jpg").convert()
+
 
         restart_button = Button(WIDTH // 3, HEIGHT // 2, 200, 50, UI_BG_COLOR, TEXT_COLOR, game_over_font, "Restart",self.restart_game)
         return_button = Button((WIDTH // 3)+20, (HEIGHT // 2)+60, 200, 50, UI_BG_COLOR, TEXT_COLOR, game_over_font,"Return to Main Menu", self.return_menu)
@@ -112,7 +114,9 @@ class Game:
                     restart_button.handle_event(event)
                     return_button.handle_event(event)
 
-            self.screen.fill('black')
+            if background_image:
+                self.screen.blit(background_image, (0, 0))
+
             self.screen.blit(game_over_text, game_over_text_rect)
             restart_button.draw(self.screen)
             return_button.draw(self.screen)
