@@ -6,8 +6,10 @@ from LevelLoader import *
 from debug import debug
 import random
 from weapons import weapon
-from ui import UI,Button
+from ui import UI
 from enemy import Enemy
+
+GAME_OVER=pygame.USEREVENT+1
 class level:
   def __init__(self):
     
@@ -78,11 +80,9 @@ class level:
       self.player.vulnerable=False
       self.player.hurt_time=pygame.time.get_ticks()
 
-    if self.player.health<0:
+    if self.player.health<=0:
       self.player.health = 0
-      return True
-    else:
-      return False
+      pygame.event.post(pygame.event.Event(GAME_OVER))
 
   def run(self):
     self.visible_sprites.custom_draw(self.player)
