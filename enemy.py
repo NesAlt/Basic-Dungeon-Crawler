@@ -5,11 +5,11 @@ from LevelLoader import *
 from debug import debug
 
 class Enemy(Entity):
-  def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player):
+  def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,is_boss=False):
 
     super().__init__(groups)
     self.sprite_type='enemy'
-
+    self.is_boss=is_boss
     self.import_graphics(monster_name)
     self.status='idle'
     self.image=self.animations[self.status][self.frame_index]
@@ -118,9 +118,16 @@ class Enemy(Entity):
       self.hit_time=pygame.time.get_ticks()
       self.vulnerable=False
 
+  def boss_killed_event():
+    pass
+
   def check_death(self):
     if self.health <= 0:
       self.kill()
+      if self.is_boss:
+        self.addboss_killed_event()
+  
+    
 
   def hit_reaction(self):
     if not self.vulnerable:

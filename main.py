@@ -2,7 +2,7 @@ import pygame
 import sys
 from settings import *
 from ui import Button
-from level import level, GAME_OVER
+from level import Level, GAME_OVER,YSortCameraGroup
 
 
 class Game:
@@ -11,7 +11,34 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("RPG")
         self.clock = pygame.time.Clock()
-        self.level = level()
+
+        self.level_selection_menu()
+    
+    def level_selection_menu(self):
+        level_buttons = []
+        for idx, level_name in enumerate(LEVELS):
+            level_button = Button(WIDTH // 2 - 100, HEIGHT // 2 - 100 + idx * 75, 200, 50, UI_BG_COLOR, TEXT_COLOR, BUTTON_FONT,level_name,
+                                  lambda name=level_name: self.start_level(name))
+            level_buttons.append(level_button)
+
+        running = True
+        while running:
+            handle_events(*level_buttons)
+            # for event in pygame.event.get():
+            #     if event.type == pygame.QUIT:
+            #         running = False
+            #         pygame.quit()
+            #         sys.exit()
+            self.screen.fill('black')
+            for button in level_buttons:
+                button.draw(self.screen)
+            pygame.display.update()
+
+    def start_level(self,level_name):
+        self.level = Level(level_name,f'Assets\Map\{level_name}\{level_name}.png')
+        self.floor_surface = pygame.image.load(f'Assets\Map\{level_name}\{level_name}.png').convert()
+        self.camera_group = YSortCameraGroup(self.floor_surface)
+        self.run()
 
     def run(self):
         while True:
@@ -24,14 +51,15 @@ class Game:
                     return
 
             self.screen.fill('black')
+            self.camera_group.custom_draw(self.level.player)
             self.level.run()
             pygame.display.update()
             self.clock.tick(FPS)
 
     def restart_game(self):
         print("Restarting Game...")
-        self.level = level()
-        self.run()
+        self.level = None
+        self.level_selection_menu()
 
     def return_menu(self):
         self.level = None
@@ -62,10 +90,15 @@ class Game:
             return_button.draw(self.screen)
             pygame.display.update()
 
-def start_game():
-    game = Game()
-    game.run()
+def handle_events(*buttons):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for button in buttons:
+                button.handle_event(event)
 
 def main_menu():
     pygame.init()
@@ -74,20 +107,22 @@ def main_menu():
 
     font = pygame.font.Font(UI_FONT, 40)
     background_image = pygame.image.load("Assets/background.jpg").convert()
-    start_button = Button(WIDTH // 2 - 100, HEIGHT // 2 - 50, 350, 100, UI_BG_COLOR, TEXT_COLOR, font, "Start Game",start_game)
-    quit_button = Button(WIDTH // 2 - 100, HEIGHT // 2 + 50, 350, 100, UI_BG_COLOR, TEXT_COLOR, font, "Quit Game",quit_game)
+    start_button = Button(WIDTH // 2 - 100, HEIGHT // 2 - 50, 350, 100, UI_BG_COLOR, TEXT_COLOR, font, "Start Game", start_game)
+    quit_button = Button(WIDTH // 2 - 100, HEIGHT // 2 + 50, 350, 100, UI_BG_COLOR, TEXT_COLOR, font, "Quit Game", quit_game)
 
     running = True
     while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+        handle_events(start_button, quit_button)
+        # for event in pygame.event.get():
+        #     print("Event:", event)  # Debug
+        #     if event.type == pygame.QUIT:
+        #         pygame.quit()
+        #         quit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                start_button.handle_event(event)
-                quit_button.handle_event(event)
-
+        #     if event.type == pygame.MOUSEBUTTONDOWN:
+        #         print("Mouse clicked at:", event.pos)  # Debug
+        #         start_button.handle_event(event)
+        #         quit_button.handle_event(event)
         if background_image:
             screen.blit(background_image, (0, 0))
 
@@ -96,10 +131,13 @@ def main_menu():
         pygame.display.flip()
     pygame.quit()
 
+def start_game():
+    game = Game()
+    game.run()
+
 def quit_game():
     pygame.quit()
     quit()
-
 
 if __name__ == "__main__":
     main_menu()

@@ -1,3 +1,6 @@
+import pygame
+pygame.font.init()
+
 WIDTH=1024
 HEIGHT=768
 FPS=60
@@ -11,6 +14,9 @@ ITEM_BOX_SIZE=80
 UI_FONT='Assets/fonts/ui fonts/joystix monospace.ttf'
 UI_FONT_SIZE=18
 
+BUTTON_FONT_SIZE=10
+BUTTON_FONT = pygame.font.Font('Assets/fonts/ui fonts/joystix monospace.ttf', BUTTON_FONT_SIZE)
+
 WATER_COLOR='#71ddee'
 UI_BG_COLOR='#222222'
 UI_BORDER_COLOR='#111111'
@@ -20,6 +26,8 @@ HEALTH_COLOR='red'
 MANA_COLOR='blue'
 ARMOR_COLOR='silver'
 UI_BORDER_ACTIVE_COLOR='gold'
+
+LEVELS = ['CityMap','MainMap']
 
 weapon_data={
   'sword':{'cooldown':100,'damage':15,'crit ratio':5,'graphic':'Assets/weapons/sword/sword.png'},

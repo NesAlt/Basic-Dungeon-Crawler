@@ -1,4 +1,4 @@
-import pygame,sys
+import pygame
 from settings import *
 from tile import Tile
 from player import Player
@@ -9,90 +9,96 @@ from weapons import weapon
 from ui import UI
 from enemy import Enemy
 
-GAME_OVER=pygame.USEREVENT+1
-class level:
-  def __init__(self):
-    
-    self.display_surface=pygame.display.get_surface()
+GAME_OVER = pygame.USEREVENT + 1
 
-    self.visible_sprites=YSortCameraGroup()
-    self.obstacle_sprites=pygame.sprite.Group()
+class Level:
+    def __init__(self, level_name, floor_image_path):
+        self.display_surface = pygame.display.get_surface()
 
-    self.current_attack=None
-    self.attack_sprites=pygame.sprite.Group()
-    self.attackable_sprites=pygame.sprite.Group()
-    self.create_map()
-    self.ui=UI()
-  
-  def create_map(self):
-          layouts={
-             'boundary':import_csv_layout('Assets\Map\FirstLVL\FirstMap_Boundary.csv'),
-             'decoration':import_csv_layout('Assets\Map\FirstLVL\FirstMap_Decoration.csv'),
-             'entities':import_csv_layout('Assets\Map\FirstLVL\FirstMap_Entities.csv')
-          }
-          graphics={
-            'structures':import_folder('Assets\Decorations\Structures')
+        self.visible_sprites = YSortCameraGroup()
+        self.obstacle_sprites = pygame.sprite.Group()
 
-          }
-          for style,layout in layouts.items():
-            for row_index,row in enumerate(layout):
-              for col_index,col in enumerate(row):
-                if col !='-1':
-                  x=col_index*TILESIZE
-                  y=row_index*TILESIZE
-                  if style=='boundary':
-                    Tile((x,y),[self.obstacle_sprites],'invisible')
+        self.current_attack = None
+        self.attack_sprites = pygame.sprite.Group()
+        self.attackable_sprites = pygame.sprite.Group()
 
-                  if style=='decoration':
-                    deco=graphics['structures'][int(col)]
-                    Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'structures',deco)
+        self.level_name = level_name
+        self.create_map()
 
-                  if style=='entities':
-                    if col=='7':
-                      self.player=Player((x,y),[self.visible_sprites],self.obstacle_sprites,self.create_attack,self.destroy_attack)
-                    else:
-                      if col=='25':monster_name='elite guard'
-                      # elif col=='8':monster_name='angel'
-                      # elif col=='25':monster_name='boss'
-                      else:monster_name = 'knight' 
-                      Enemy(monster_name,(x,y),[self.visible_sprites,self.attackable_sprites],self.obstacle_sprites,self.damage_player)
+        self.floor_surf = pygame.image.load(floor_image_path).convert() if floor_image_path else None
 
-  def create_attack(self):
-    self.current_attack=weapon(self.player,[self.visible_sprites,self.attack_sprites])
+        self.ui = UI()
 
-  def destroy_attack(self):
-    if self.current_attack:
-      self.current_attack.kill()
-    self.current_attack=None
+    def create_map(self):
+        layouts = {
+            'boundary': import_csv_layout(f'Assets/Map/{self.level_name}/{self.level_name}_Boundary.csv'),
+            'decoration': import_csv_layout(f'Assets/Map/{self.level_name}/{self.level_name}_Decoration.csv'),
+            'entities': import_csv_layout(f'Assets/Map/{self.level_name}/{self.level_name}_Entities.csv')
+        }
 
-  def player_attack_logic(self):
-    if self.attack_sprites:
-      for attack_sprite in self.attack_sprites:
-        collision_sprites=pygame.sprite.spritecollide(attack_sprite,self.attackable_sprites ,False)
-        if collision_sprites:
-          for target_sprite in collision_sprites:
-            if target_sprite.sprite_type=='enemy':
-              target_sprite.get_damage(self.player,attack_sprite.sprite_type)
+        graphics = {'structures': import_folder('Assets/Decorations/Structures')}
 
-  def damage_player(self,amount):
-    if self.player.vulnerable:
-      self.player.health -= amount
-      self.player.vulnerable=False
-      self.player.hurt_time=pygame.time.get_ticks()
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+                        if style == 'boundary':
+                            Tile((x, y), [self.obstacle_sprites], 'invisible')
 
-    if self.player.health<=0:
-      self.player.health = 0
-      pygame.event.post(pygame.event.Event(GAME_OVER))
+                        if style == 'decoration':
+                            deco = graphics['structures'][int(col)]
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'structures', deco)
 
-  def run(self):
-    self.visible_sprites.custom_draw(self.player)
-    self.visible_sprites.update()
-    self.visible_sprites.enemy_update(self.player)
-    self.player_attack_logic()
-    self.ui.display(self.player)
+                        if style == 'entities':
+                            if col == '7':
+                                self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites,
+                                                     self.create_attack, self.destroy_attack)
+                            else:
+                                monster_name = 'knight'
+                                if col == '25':
+                                    monster_name = 'elite guard'
+                                Enemy(monster_name, (x, y), [self.visible_sprites, self.attackable_sprites],
+                                      self.obstacle_sprites, self.damage_player)
+
+    def create_attack(self):
+        self.current_attack = weapon(self.player, [self.visible_sprites, self.attack_sprites])
+
+    def destroy_attack(self):
+        if self.current_attack:
+            self.current_attack.kill()
+        self.current_attack = None
+
+    def player_attack_logic(self):
+        if self.attack_sprites:
+            for attack_sprite in self.attack_sprites:
+                collision_sprites = pygame.sprite.spritecollide(attack_sprite, self.attackable_sprites, False)
+                if collision_sprites:
+                    for target_sprite in collision_sprites:
+                        if target_sprite.sprite_type == 'enemy':
+                            target_sprite.get_damage(self.player, attack_sprite.sprite_type)
+
+    def damage_player(self, amount):
+        if self.player.vulnerable:
+            self.player.health -= amount
+            self.player.vulnerable = False
+            self.player.hurt_time = pygame.time.get_ticks()
+
+        if self.player.health <= 0:
+            self.player.health = 0
+            pygame.event.post(pygame.event.Event(GAME_OVER))
+
+    def run(self):
+        if self.floor_surf:
+            self.visible_sprites.custom_draw(self.player)
+            self.visible_sprites.update()
+            self.visible_sprites.enemy_update(self.player)
+            self.player_attack_logic()
+            self.ui.display(self.player)
 
 class YSortCameraGroup(pygame.sprite.Group):
-  def __init__(self):
+  def __init__(self,floor_surf=None):
 
     super().__init__()
     self.display_surface=pygame.display.get_surface()
@@ -100,8 +106,9 @@ class YSortCameraGroup(pygame.sprite.Group):
     self.half_height =self.display_surface.get_size()[1]//2
     self.offset=pygame.math.Vector2()
 
-    self.floor_surf=pygame.image.load('Assets\MainMap.png').convert()
-    self.floor_rect=self.floor_surf.get_rect(topleft=(0,0))
+    self.floor_surf=floor_surf
+    if self.floor_surf:
+      self.floor_rect=self.floor_surf.get_rect(topleft=(0,0))
 
   def enemy_update(self,player):
     enemy_sprites=[sprite for sprite in self.sprites() if hasattr(sprite,'sprite_type') and sprite.sprite_type=='enemy']
@@ -113,8 +120,9 @@ class YSortCameraGroup(pygame.sprite.Group):
     self.offset.x=player.rect.centerx-self.half_width
     self.offset.y=player.rect.centery-self.half_height
 
-    floor_offset_pos=self.floor_rect.topleft-self.offset
-    self.display_surface.blit(self.floor_surf,floor_offset_pos)
+    if self.floor_surf:
+      floor_offset_pos=self.floor_rect.topleft-self.offset
+      self.display_surface.blit(self.floor_surf,floor_offset_pos)
 
     for sprite in sorted(self.sprites(),key=lambda sprite:sprite.rect.centery):
       offset_pos=sprite.rect.topleft-self.offset
