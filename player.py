@@ -18,12 +18,12 @@ class Player(Entity):
     self.game_over=False
 
     self.attacking=False
-    self.attack_cooldown=400
+    self.attack_cooldown=500
     self.attack_speed=0
     self.guard=False
     self.guard_cooldown=400
 
-    self.stats={'health':200,'armor':50,'agility':3,'attack':200,'mana':5,'crit ratio':5}
+    self.stats={'health':200,'armor':50,'agility':3,'attack':25,'mana':5,'crit ratio':5}
 
     self.health=self.stats['health']
     self.armor=self.stats['armor']

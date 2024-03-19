@@ -89,9 +89,10 @@ class Level:
         if self.player.health <= 0:
             self.player.health = 0
             pygame.event.post(pygame.event.Event(GAME_OVER))
-        if not self.attackable_sprites:
-         pygame.event.post(pygame.event.Event(GAME_OVER, win=True))
-
+    
+    def check_victory(self):
+      return not self.attackable_sprites
+    
     def run(self):
         if self.floor_surf:
             self.visible_sprites.custom_draw(self.player)

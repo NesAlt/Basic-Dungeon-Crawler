@@ -39,6 +39,28 @@ class Game:
         self.camera_group = YSortCameraGroup(self.floor_surface)
         self.run()
 
+    def victory_menu(self):
+        victory_font = pygame.font.Font(UI_FONT, 40)
+        victory_text = victory_font.render("Victory!", True, TEXT_COLOR)
+        victory_text_rect = victory_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
+
+        return_button = Button(WIDTH // 3, HEIGHT // 2, 200, 50, UI_BG_COLOR, TEXT_COLOR, victory_font, "Return to Main Menu", self.return_menu)
+
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    return_button.handle_event(event)
+
+            self.screen.fill('black')
+            self.screen.blit(victory_text, victory_text_rect)
+            return_button.draw(self.screen)
+            pygame.display.update()
+
     def run(self):
         while True:
             for event in pygame.event.get():
@@ -46,12 +68,19 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 elif event.type == GAME_OVER:
-                    self.game_over_menu()
+                    if event.win:
+                        self.victory_menu()
+                    else:
+                        self.game_over_menu()
                     return
 
             self.screen.fill('black')
             self.camera_group.custom_draw(self.level.player)
             self.level.run()
+            if self.level.check_victory():
+                self.victory_menu()
+                return
+        
             pygame.display.update()
             self.clock.tick(FPS)
 
