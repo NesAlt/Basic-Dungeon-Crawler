@@ -23,7 +23,7 @@ class Player(Entity):
     self.guard=False
     self.guard_cooldown=400
 
-    self.stats={'health':100,'armor':50,'agility':3,'attack':25,'mana':5,'crit ratio':5}
+    self.stats={'health':200,'armor':50,'agility':3,'attack':200,'mana':5,'crit ratio':5}
 
     self.health=self.stats['health']
     self.armor=self.stats['armor']
@@ -34,7 +34,7 @@ class Player(Entity):
 
     self.vulnerable=True
     self.hurt_time=None
-    self.invulnerablity_duration=500
+    self.invulnerablity_duration=200
 
     self.obstacle_sprites =obstacle_sprites
 

@@ -58,7 +58,8 @@ class Level:
                             else:
                                 monster_name = 'knight'
                                 if col == '25':
-                                    monster_name = 'elite guard'
+                                  monster_name = 'elite guard'
+
                                 Enemy(monster_name, (x, y), [self.visible_sprites, self.attackable_sprites],
                                       self.obstacle_sprites, self.damage_player)
 
@@ -88,11 +89,14 @@ class Level:
         if self.player.health <= 0:
             self.player.health = 0
             pygame.event.post(pygame.event.Event(GAME_OVER))
+        if not self.attackable_sprites:
+         pygame.event.post(pygame.event.Event(GAME_OVER, win=True))
 
     def run(self):
         if self.floor_surf:
             self.visible_sprites.custom_draw(self.player)
             self.visible_sprites.update()
+            # print(f"Number of Attackable Sprites: {len(self.attackable_sprites)}")
             self.visible_sprites.enemy_update(self.player)
             self.player_attack_logic()
             self.ui.display(self.player)

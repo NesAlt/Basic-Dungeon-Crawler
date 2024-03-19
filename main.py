@@ -4,7 +4,6 @@ from settings import *
 from ui import Button
 from level import Level, GAME_OVER,YSortCameraGroup
 
-
 class Game:
     def __init__(self):
         pygame.init()
