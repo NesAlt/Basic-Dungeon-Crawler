@@ -8,6 +8,7 @@ class Enemy(Entity):
   def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,is_boss=False):
 
     super().__init__(groups)
+    self.animation_speed=0.12
     self.sprite_type='enemy'
     self.is_boss=is_boss
     self.import_graphics(monster_name)

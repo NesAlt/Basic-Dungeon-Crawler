@@ -20,6 +20,9 @@ class Game:
                                   lambda name=level_name: self.start_level(name))
             level_buttons.append(level_button)
 
+        background_image = pygame.image.load("Assets/level back2.jpg").convert()
+
+
         running = True
         while running:
             handle_events(*level_buttons)
@@ -28,9 +31,11 @@ class Game:
             #         running = False
             #         pygame.quit()
             #         sys.exit()
-            self.screen.fill('black')
+            if background_image:
+                self.screen.blit(background_image, (0, 0))
             for button in level_buttons:
                 button.draw(self.screen)
+
             pygame.display.update()
 
     def start_level(self,level_name):
@@ -43,8 +48,9 @@ class Game:
         victory_font = pygame.font.Font(UI_FONT, 40)
         victory_text = victory_font.render("Victory!", True, TEXT_COLOR)
         victory_text_rect = victory_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
+        background_image = pygame.image.load("Assets/victory back.jpg").convert()
 
-        return_button = Button(WIDTH // 3, HEIGHT // 2, 200, 50, UI_BG_COLOR, TEXT_COLOR, victory_font, "Return to Main Menu", self.return_menu)
+        return_button = Button((WIDTH // 3)-150, HEIGHT // 2, 650, 50, UI_BG_COLOR, TEXT_COLOR, victory_font, "Return to Main Menu", self.return_menu)
 
         running = True
         while running:
@@ -55,7 +61,8 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     return_button.handle_event(event)
 
-            self.screen.fill('black')
+            if background_image:
+                self.screen.blit(background_image, (0, 0))
             self.screen.blit(victory_text, victory_text_rect)
             return_button.draw(self.screen)
             pygame.display.update()
@@ -95,13 +102,13 @@ class Game:
 
     def game_over_menu(self):
         game_over_font = pygame.font.Font(UI_FONT, 40)
-        game_over_text = game_over_font.render("Game Over!", True, TEXT_COLOR)
+        game_over_text = game_over_font.render("Game Over!", True, 'red')
         game_over_text_rect = game_over_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
-        background_image = pygame.image.load("Assets/background.jpg").convert()
+        background_image = pygame.image.load("Assets/over back.jpg").convert()
 
 
-        restart_button = Button(WIDTH // 3, HEIGHT // 2, 200, 50, UI_BG_COLOR, TEXT_COLOR, game_over_font, "Restart",self.restart_game)
-        return_button = Button((WIDTH // 3)+20, (HEIGHT // 2)+60, 200, 50, UI_BG_COLOR, TEXT_COLOR, game_over_font,"Return to Main Menu", self.return_menu)
+        restart_button = Button((WIDTH // 3)+40, (HEIGHT // 2)-50, 250, 50, UI_BG_COLOR, TEXT_COLOR, game_over_font, "Restart",self.restart_game)
+        return_button = Button((WIDTH // 3)-160, (HEIGHT // 2)+10, 650, 50, UI_BG_COLOR, TEXT_COLOR, game_over_font,"Return to Main Menu", self.return_menu)
 
         running = True
         while running:
@@ -139,8 +146,8 @@ def main_menu():
 
     font = pygame.font.Font(UI_FONT, 40)
     background_image = pygame.image.load("Assets/background.jpg").convert()
-    start_button = Button(WIDTH // 2 - 100, HEIGHT // 2 - 50, 350, 100, UI_BG_COLOR, TEXT_COLOR, font, "Start Game", start_game)
-    quit_button = Button(WIDTH // 2 - 100, HEIGHT // 2 + 50, 350, 100, UI_BG_COLOR, TEXT_COLOR, font, "Quit Game", quit_game)
+    start_button = Button((WIDTH // 2 - 100)-50, HEIGHT // 2 - 50, 350, 100, UI_BG_COLOR, TEXT_COLOR, font, "Start Game", start_game)
+    quit_button = Button((WIDTH // 2 - 100)-50, HEIGHT // 2 + 50, 350, 100, UI_BG_COLOR, TEXT_COLOR, font, "Quit Game", quit_game)
 
     running = True
     while running:
