@@ -9,7 +9,7 @@ TILESIZE=32
 BAR_HEIGHT=20
 HEALTH_BAR_WIDTH=200
 MANA_BAR_WIDTH=100
-ARMOR_RATING=20
+# ARMOR_RATING=20
 ITEM_BOX_SIZE=80
 UI_FONT='Assets/fonts/ui fonts/joystix monospace.ttf'
 UI_FONT_SIZE=18
@@ -24,7 +24,7 @@ TEXT_COLOR='#EEEEEE'
 
 HEALTH_COLOR='red'
 MANA_COLOR='blue'
-ARMOR_COLOR='silver'
+# ARMOR_COLOR='silver'
 UI_BORDER_ACTIVE_COLOR='gold'
 
 LEVELS = ['MainMap','CityMap']
@@ -37,8 +37,7 @@ weapon_data={
   'shotgun':{'cooldown':80,'damage':12,'crit ratio':0,'graphic':'Assets/weapons/shotgun/shotgun.png'}}
 
 magic_data={
-  'staff_magic':{'cooldown':150},
-  'tome_magic':{'cooldown':250}
+  'heal':{'amount':50,'cost':50,'graphic':'Assets\particles\heal\heal.png'}
 }
 
 monster_data = {

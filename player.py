@@ -23,10 +23,10 @@ class Player(Entity):
     self.guard=False
     self.guard_cooldown=400
 
-    self.stats={'health':2000,'armor':50,'agility':3,'attack':235,'mana':5,'crit ratio':5}
+    self.stats={'health':2000,'agility':3,'attack':235,'mana':5,'crit ratio':5}
 
     self.health=self.stats['health']
-    self.armor=self.stats['armor']
+    # self.armor=self.stats['armor']
     self.speed=self.stats['agility']
     self.attack=self.stats['attack']
     self.mana=self.stats['mana']

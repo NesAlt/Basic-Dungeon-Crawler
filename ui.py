@@ -29,13 +29,13 @@ class UI:
         pygame.draw.rect(self.display_surface,color,current_rect)
         pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,bg_rect,3)
     
-    def show_armor(self,armor_rating):
-        text_surf=self.font.render(str(int(armor_rating)),False,TEXT_COLOR)
+    # def show_armor(self,armor_rating):
+    #     text_surf=self.font.render(str(int(armor_rating)),False,TEXT_COLOR)
 
-        text_rect=text_surf.get_rect(topleft=(160,34))
-        pygame.draw.rect(self.display_surface,UI_BG_COLOR,text_rect.inflate(6,6))
-        self.display_surface.blit(text_surf,text_rect)
-        pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,text_rect.inflate(6,6),3)
+    #     text_rect=text_surf.get_rect(topleft=(160,34))
+    #     pygame.draw.rect(self.display_surface,UI_BG_COLOR,text_rect.inflate(6,6))
+    #     self.display_surface.blit(text_surf,text_rect)
+    #     pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,text_rect.inflate(6,6),3)
 
     def selection_box(self,left,top):
         bg_rect=pygame.Rect(left,top,ITEM_BOX_SIZE,ITEM_BOX_SIZE)
@@ -56,7 +56,8 @@ class UI:
         self.show_bar(player.health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
         self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR)
 
-        self.show_armor(player.armor)
+        # self.show_armor(player.armor)
+        
         self.weapon_overlay(player.weapon_index)
 
 class Button:
