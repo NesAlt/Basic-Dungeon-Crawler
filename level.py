@@ -8,6 +8,7 @@ import random
 from weapons import weapon
 from ui import UI
 from enemy import Enemy
+from particles import AnimationPlayer
 
 GAME_OVER = pygame.USEREVENT + 1
 
@@ -28,6 +29,8 @@ class Level:
         self.floor_surf = pygame.image.load(floor_image_path).convert() if floor_image_path else None
 
         self.ui = UI()
+
+        self.animation_player=AnimationPlayer()
 
     def create_map(self):
         layouts = {
@@ -54,14 +57,14 @@ class Level:
                         if style == 'entities':
                             if col == '7':
                                 self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites,
-                                                     self.create_attack, self.destroy_attack)
+                                                     self.create_attack, self.destroy_attack,self.create_magic)
                             else:
                                 monster_name = 'knight'
                                 if col == '25':
                                   monster_name = 'elite guard'
 
                                 Enemy(monster_name, (x, y), [self.visible_sprites, self.attackable_sprites],
-                                      self.obstacle_sprites, self.damage_player)
+                                      self.obstacle_sprites, self.damage_player,self.death_particles)
 
     def create_attack(self):
         self.current_attack = weapon(self.player, [self.visible_sprites, self.attack_sprites])
@@ -70,6 +73,11 @@ class Level:
         if self.current_attack:
             self.current_attack.kill()
         self.current_attack = None
+
+    def create_magic(self,style,amount,cost):
+       print(style)
+       print(amount)
+       print(cost)
 
     def player_attack_logic(self):
         if self.attack_sprites:
@@ -89,7 +97,10 @@ class Level:
         if self.player.health <= 0:
             self.player.health = 0
             pygame.event.post(pygame.event.Event(GAME_OVER))
-    
+
+    def death_particles(self,pos,particle_type):
+       self.animation_player.create_particles(particle_type,pos,self.visible_sprites)
+
     def check_victory(self):
       return not self.attackable_sprites
     

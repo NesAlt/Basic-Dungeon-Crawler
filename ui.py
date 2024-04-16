@@ -15,6 +15,11 @@ class UI:
             path = weapon['graphic']
             weapon = pygame.image.load(path).convert_alpha()
             self.weapon_graphics.append(weapon)
+        
+        self.magic_graphics=[]
+        for magic in magic_data.values():
+           magic=pygame.image.load(magic['graphic']).convert_alpha()
+           self.magic_graphics.append(magic)
 
 
     def show_bar(self,current_amount,max_amount,bg_rect,color):
@@ -50,15 +55,24 @@ class UI:
       weapon_rect = weapon_surf.get_rect(center = bg_rect.center)
       
       self.display_surface.blit(weapon_surf,weapon_rect)
+    
 
+    def maigc_overlay(self,magic_index):
+       
+       bg_rect=self.selection_box(80,680)
+       magic_surf=self.magic_graphics[magic_index]
+       magic_rect = magic_surf.get_rect(center = bg_rect.center)
+
+       self.display_surface.blit(magic_surf,magic_rect)
         
     def display(self,player):
         self.show_bar(player.health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
         self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR)
 
         # self.show_armor(player.armor)
-        
+
         self.weapon_overlay(player.weapon_index)
+        self.maigc_overlay(player.magic_index)
 
 class Button:
   def __init__(self, x, y, width, height, color, text_color, font, text, action):

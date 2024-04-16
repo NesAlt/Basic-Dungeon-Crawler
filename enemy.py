@@ -5,7 +5,7 @@ from LevelLoader import *
 from debug import debug
 
 class Enemy(Entity):
-  def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,is_boss=False):
+  def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,death_particles,is_boss=False):
 
     super().__init__(groups)
     self.animation_speed=0.12
@@ -34,6 +34,7 @@ class Enemy(Entity):
     self.can_attack=True
     self.attack_time=None
     self.damage_player=damage_player
+    self.death_particles=death_particles
     self.vulnerable=True
     self.hit_time=None
     self.invincibility_duration=600
@@ -122,6 +123,7 @@ class Enemy(Entity):
   def check_death(self):
     if self.health <= 0:
       self.kill()
+      self.death_particles(self.rect.center,'death')
 
   def hit_reaction(self):
     if not self.vulnerable:
