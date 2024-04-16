@@ -23,7 +23,7 @@ class Player(Entity):
     self.guard=False
     self.guard_cooldown=400
 
-    self.stats={'health':2000,'agility':3,'attack':235,'mana':5,'crit ratio':5}
+    self.stats={'health':200,'agility':3,'attack':25,'mana':100,'crit ratio':5}
 
     self.health=self.stats['health']
     # self.armor=self.stats['armor']
@@ -49,11 +49,9 @@ class Player(Entity):
     self.create_magic=create_magic
     # self.destroy_magic=destroy_magic
     self.magic_index=0
-    self.heal=list(magic_data.keys())[self.magic_index]
+    self.magic=list(magic_data.keys())[self.magic_index]
     # self.can_switch_magic=True
     # self.magic_switch_time=None
-
-
 
   def import_player_assets(self):
     character_path='Assets\\player'
@@ -131,11 +129,12 @@ class Player(Entity):
         self.attack_pressed_last_frame = False
       
       if keys[pygame.K_f]:
+        self.attacking=True
+        self.attack_time=pygame.time.get_ticks()
         style=list(magic_data.keys())[self.magic_index]
         amount=list(magic_data.values())[self.magic_index]['amount']
         cost=list(magic_data.values())[self.magic_index]['cost']
         self.create_magic(style,amount,cost)
-
 
       if keys[pygame.K_v]:
         self.guard=True
@@ -185,6 +184,12 @@ class Player(Entity):
     else:
       self.image.set_alpha(255)
 
+  def mana_regen(self):
+    if self.mana<self.stats['mana']:
+      self.mana+=0.01
+    else:
+      self.mana=self.stats['mana']
+
   def get_full_weapon_damage(self):
     base_damage=self.stats['attack']
     weapon_damage=weapon_data[self.weapon]['damage']
@@ -204,3 +209,4 @@ class Player(Entity):
     self.get_status()
     self.animate()
     self.move(self.speed)
+    self.mana_regen()

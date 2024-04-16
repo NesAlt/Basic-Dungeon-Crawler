@@ -9,6 +9,7 @@ from weapons import weapon
 from ui import UI
 from enemy import Enemy
 from particles import AnimationPlayer
+from magic import MagicPlayer
 
 GAME_OVER = pygame.USEREVENT + 1
 
@@ -31,6 +32,8 @@ class Level:
         self.ui = UI()
 
         self.animation_player=AnimationPlayer()
+        
+        self.magic_player=MagicPlayer(self.animation_player)
 
     def create_map(self):
         layouts = {
@@ -75,9 +78,8 @@ class Level:
         self.current_attack = None
 
     def create_magic(self,style,amount,cost):
-       print(style)
-       print(amount)
-       print(cost)
+       if style=='heal':
+          self.magic_player.heal(self.player,amount,cost,[self.visible_sprites])
 
     def player_attack_logic(self):
         if self.attack_sprites:

@@ -57,7 +57,7 @@ class UI:
       self.display_surface.blit(weapon_surf,weapon_rect)
     
 
-    def maigc_overlay(self,magic_index):
+    def magic_overlay(self,magic_index):
        
        bg_rect=self.selection_box(80,680)
        magic_surf=self.magic_graphics[magic_index]
@@ -72,7 +72,7 @@ class UI:
         # self.show_armor(player.armor)
 
         self.weapon_overlay(player.weapon_index)
-        self.maigc_overlay(player.magic_index)
+        self.magic_overlay(player.magic_index)
 
 class Button:
   def __init__(self, x, y, width, height, color, text_color, font, text, action):
