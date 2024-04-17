@@ -62,9 +62,18 @@ class Level:
                                 self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites,
                                                      self.create_attack, self.destroy_attack,self.create_magic)
                             else:
-                                monster_name = 'knight'
+                                if col=='16':
+                                    monster_name = 'knight'
                                 if col == '25':
                                   monster_name = 'elite guard'
+                                if col =='8':
+                                    monster_name='zombie'
+                                if col=='17':
+                                   monster_name='zombie king'
+                                if col=='34':
+                                   monster_name='worm'
+                                if col=='26':
+                                    monster_name='slime'
 
                                 Enemy(monster_name, (x, y), [self.visible_sprites, self.attackable_sprites],
                                       self.obstacle_sprites, self.damage_player,self.death_particles)
