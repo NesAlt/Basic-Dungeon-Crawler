@@ -41,10 +41,10 @@ magic_data={
 }
 
 monster_data = {
-	'elite guard': {'health': 500,'damage':15,'exp':0,'attack_type': 'slam','cooldown':600, 'speed': 0.4, 'resistance': 3, 'attack_radius': 30, 'notice_radius': 250},
+	'elite guard': {'health': 500,'damage':15,'exp':0,'attack_type': 'slam','cooldown':600, 'speed': 1, 'resistance': 3, 'attack_radius': 30, 'notice_radius': 250},
 	'knight': {'health': 150,'damage':5,'exp':8,'attack_type': 'slash','cooldown':100, 'speed': 1.5, 'resistance': 3, 'attack_radius': 80, 'notice_radius': 500},
 	'zombie': {'health': 80,'damage':3,'exp':5,'attack_type': 'punch','cooldown':80, 'speed': 2, 'resistance': 1, 'attack_radius': 20, 'notice_radius': 350},
-	'zombie king': {'health': 380,'damage':10,'exp':20,'attack_type': 'claw','cooldown':500, 'speed': 0.5, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 300},
+	'zombie king': {'health': 380,'damage':10,'exp':20,'attack_type': 'claw','cooldown':500, 'speed': 1, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 300},
   'worm': {'health': 450,'damage':12,'exp':20,'attack_type': 'crunch','cooldown':350, 'speed': 3, 'resistance': 3, 'attack_radius': 50, 'notice_radius': 450},
   'slime': {'health': 50,'damage':2,'exp':3,'attack_type': 'slash','cooldown':50, 'speed': 2.5, 'resistance': 1, 'attack_radius': 20, 'notice_radius': 500}
   }

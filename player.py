@@ -186,7 +186,7 @@ class Player(Entity):
 
   def mana_regen(self):
     if self.mana<self.stats['mana']:
-      self.mana+=0.01
+      self.mana+=0.05
     else:
       self.mana=self.stats['mana']
 
